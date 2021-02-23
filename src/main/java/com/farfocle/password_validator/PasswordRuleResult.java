@@ -2,6 +2,7 @@ package com.farfocle.password_validator;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 
 public final class PasswordRuleResult {
 
@@ -39,5 +40,19 @@ public final class PasswordRuleResult {
 
     public static PasswordRuleResult createFail(PasswordError errorType, Map<InfoType, String> errorInfo){
         return new PasswordRuleResult(errorType, errorInfo);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PasswordRuleResult that = (PasswordRuleResult) o;
+        return errorType == that.errorType &&
+                Objects.equals(errorInfo, that.errorInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(errorType, errorInfo);
     }
 }

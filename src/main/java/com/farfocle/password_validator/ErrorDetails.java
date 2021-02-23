@@ -1,27 +1,31 @@
 package com.farfocle.password_validator;
 
 
-import com.farfocle.password_validator.rules.DigitsRule;
 
-import java.util.HashMap;
+import java.util.Collections;
+
 import java.util.Map;
 
 public final class ErrorDetails {
     private final PasswordError errorType;
-    private final Map<InfoType, String> parameters;
+    private final Map<InfoType, String> errorInfo;
+    private final String message;
 
-    public ErrorDetails(PasswordError errorType) {
+    public ErrorDetails(PasswordError errorType, Map<InfoType, String> errorInfo, String message) {
         this.errorType = errorType;
-        this.parameters = new HashMap<>();
+        this.errorInfo = errorInfo;
+        this.message = message;
     }
 
     public PasswordError getErrorType() {
         return errorType;
     }
 
-    void addParameter(InfoType infoType, String value){
-        this.parameters.put(infoType, value);
+    public Map<InfoType, String> getErrorInfo() {
+        return Collections.unmodifiableMap(this.errorInfo);
     }
 
-
+    public String getMessage() {
+        return message;
+    }
 }

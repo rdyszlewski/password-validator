@@ -1,111 +1,137 @@
-//package com.farfocle.password_validator;
-//
-//import com.farfocle.password_validator.rules.*;
-//import org.junit.Assert;
-//import org.junit.Test;
-//import org.mockito.Mockito;
-//
-//import java.util.Arrays;
-//import java.util.List;
-//
-//import static org.junit.Assert.*;
-//import static org.mockito.Mockito.when;
-//
-//public class PasswordValidatorTest {
-//
-//    private final MinLengthRule minLengthRule = Mockito.mock(MinLengthRule.class);
-//    private final MaxLengthRule maxLengthRule = Mockito.mock(MaxLengthRule.class);
-//    private final UppercaseRule uppercaseRule = Mockito.mock(UppercaseRule.class);
-//    private final DigitsRule digitsRule = Mockito.mock(DigitsRule.class);
-//
-//    @Test
-//    public void shouldReturnValidationSuccess() {
-//        PasswordData passwordData = new PasswordData("Sho4hsauin");
-//        setupRule(minLengthRule, true, false, getTooShortError(), passwordData);
-//        setupRule(maxLengthRule, true, false, getTooLongError(), passwordData);
-//        setupRule(uppercaseRule, true, false, getUppercaseError(), passwordData);
-//        setupRule(digitsRule, true, false, getDigitsError(), passwordData);
-//
-//        ValidationResult validationResult = prepareValidatorAndValidate(passwordData);
-//        assertTrue(validationResult.isValid());
-//        assertEquals(0, validationResult.getErrors().size());
-//    }
-//
-//    @Test
-//    public void shouldReturnInvalid() {
-//        PasswordData passwordData = new PasswordData("Sho4hsauin");
-//        setupRule(minLengthRule, true, false, getTooShortError(), passwordData);
-//        setupRule(maxLengthRule, false, false, getTooLongError(), passwordData);
-//        setupRule(uppercaseRule, true, false, getUppercaseError(), passwordData);
-//        setupRule(digitsRule, false, false, getDigitsError(), passwordData);
-//
-//        ValidationResult result = prepareValidatorAndValidate(passwordData);
-//        assertFalse(result.isValid());
-//        assertEquals(2, result.getErrors().size());
-//        Assert.assertEquals(PasswordError.TOO_LONG, result.getErrors().get(0).getErrorType());
-//        assertEquals(PasswordError.DIGITS, result.getErrors().get(1).getErrorType());
-//    }
-//
-//    @Test
-//    public void shouldInterrupt() {
-//        PasswordData passwordData = new PasswordData("Sho4hsauin");
-//        setupRule(minLengthRule, true, false, getTooShortError(), passwordData);
-//        setupRule(maxLengthRule, false, true, getTooLongError(), passwordData);
-//        setupRule(uppercaseRule, true, false, getUppercaseError(), passwordData);
-//        setupRule(digitsRule, false, false, getDigitsError(), passwordData);
-//
-//        ValidationResult result = prepareValidatorAndValidate(passwordData);
-//        assertFalse(result.isValid());
-//        assertEquals(1, result.getErrors().size());
-//        assertEquals(PasswordError.TOO_LONG, result.getErrors().get(0).getErrorType());
-//    }
-//
-//    @Test
-//    public void shouldNotInterruptWhenValid() {
-//        PasswordData passwordData = new PasswordData("Sho4hsauin");
-//        setupRule(minLengthRule, true, true, getTooShortError(), passwordData);
-//        setupRule(maxLengthRule, true, true, getTooLongError(), passwordData);
-//        setupRule(uppercaseRule, true, true, getUppercaseError(), passwordData);
-//        setupRule(digitsRule, true, true, getDigitsError(), passwordData);
-//
-//        ValidationResult result = prepareValidatorAndValidate(passwordData);
-//        assertTrue(result.isValid());
-//        assertEquals(0, result.getErrors().size());
-//    }
-//
-//    private ValidationResult prepareValidatorAndValidate(PasswordData passwordData) {
-//        List<Rule> rules = Arrays.asList(
-//                minLengthRule,
-//                maxLengthRule,
-//                uppercaseRule,
-//                digitsRule
-//        );
-//        PasswordValidator validator = new PasswordValidator(rules);
-//
-//
-//        ValidationResult result = validator.validate(passwordData);
-//        return result;
-//    }
-//
-//    private void setupRule(Rule rule, boolean valid, boolean interrupting, ErrorDetails errorDetails, PasswordData passwordData) {
-//        when(rule.validate(passwordData)).thenReturn(valid);
-//        when(rule.getErrorDetails()).thenReturn(errorDetails);
-//        when(rule.isInterrupting()).thenReturn(interrupting);
-//    }
-//
-//    private ErrorDetails getTooShortError() {
-//        return new ErrorDetails(PasswordError.TOO_SHORT, "1");
-//    }
-//
-//    private ErrorDetails getTooLongError() {
-//        return new ErrorDetails(PasswordError.TOO_LONG, "1");
-//    }
-//
-//    private ErrorDetails getUppercaseError() {
-//        return new ErrorDetails(PasswordError.UPPERCASE, "1");
-//    }
-//
-//    private ErrorDetails getDigitsError() {
-//        return new ErrorDetails(PasswordError.DIGITS, "1");
-//    }
-//}
+package com.farfocle.password_validator;
+
+import com.farfocle.password_validator.rules.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
+
+public class PasswordValidatorTest {
+
+    private  MinLengthRule minLengthRule;
+    private  MaxLengthRule maxLengthRule;
+    private  UppercaseRule uppercaseRule;
+    private  DigitsRule digitsRule;
+
+    private IPasswordValidator passwordValidator;
+    private final PasswordData passwordData = new PasswordData("dkasj34D");
+
+    @Before
+    public void initValidator(){
+        minLengthRule = Mockito.mock(MinLengthRule.class);
+        maxLengthRule = Mockito.mock(MaxLengthRule.class);
+        uppercaseRule = Mockito.mock(UppercaseRule.class);
+        digitsRule = Mockito.mock(DigitsRule.class);
+
+
+        when(minLengthRule.getErrorType()).thenReturn(PasswordError.TOO_SHORT);
+        when(maxLengthRule.getErrorType()).thenReturn(PasswordError.TOO_LONG);
+        when(uppercaseRule.getErrorType()).thenReturn(PasswordError.UPPERCASE);
+        when(digitsRule.getErrorType()).thenReturn(PasswordError.DIGITS);
+        List<Rule> rules = Arrays.asList(minLengthRule, maxLengthRule, uppercaseRule, digitsRule);
+        passwordValidator = new PasswordValidator(rules);
+    }
+
+    @Test
+    public void shouldReturnValid(){
+        prepareRule(minLengthRule, PasswordRuleResult.createSuccess(), false, passwordData);
+        prepareRule(maxLengthRule, PasswordRuleResult.createSuccess(), false, passwordData);
+        prepareRule(uppercaseRule, PasswordRuleResult.createSuccess(), false, passwordData);
+        prepareRule(digitsRule, PasswordRuleResult.createSuccess(), false, passwordData);
+
+        ValidationResult validationResult = passwordValidator.validate(passwordData);
+        assertTrue(validationResult.isValid());
+        assertEquals(0, validationResult.getErrors().size());
+
+
+    }
+
+    @Test
+    public void shouldNotInterruptWhenValid(){
+        prepareRule(minLengthRule, PasswordRuleResult.createSuccess(), true, passwordData);
+        prepareRule(maxLengthRule, PasswordRuleResult.createSuccess(), true, passwordData);
+        prepareRule(uppercaseRule, PasswordRuleResult.createSuccess(), true, passwordData);
+        prepareRule(digitsRule, PasswordRuleResult.createSuccess(), true, passwordData);
+
+        ValidationResult validationResult = passwordValidator.validate(passwordData);
+        assertTrue(validationResult.isValid());
+        assertEquals(0, validationResult.getErrors().size());
+    }
+
+    private void prepareRule(Rule rule,PasswordRuleResult result, boolean interrupting,  PasswordData password){
+        when(rule.validate(password)).thenReturn(result);
+        when(rule.isInterrupting()).thenReturn(interrupting);
+    }
+
+    @Test
+    public void shouldReturnInvalidWhenHasErrors(){
+        prepareRule(minLengthRule, getMinLengthErrorResult(), false, passwordData);
+        prepareRule(maxLengthRule, getMaxLengthErrorResult(), false, passwordData);
+        prepareRule(uppercaseRule, getUppercaseErrorResult(), false, passwordData);
+        prepareRule(digitsRule, getDigitsErrorResult(), false, passwordData);
+
+        ValidationResult validationResult = passwordValidator.validate(passwordData);
+        assertFalse(validationResult.isValid());
+        assertEquals(4, validationResult.getErrors().size());
+        assertEquals(PasswordError.TOO_SHORT, validationResult.getErrors().get(0).getErrorType());
+        assertEquals(PasswordError.TOO_LONG, validationResult.getErrors().get(1).getErrorType());
+        assertEquals(PasswordError.UPPERCASE, validationResult.getErrors().get(2).getErrorType());
+        assertEquals(PasswordError.DIGITS, validationResult.getErrors().get(3).getErrorType());
+    }
+
+    private PasswordRuleResult getMinLengthErrorResult(){
+        Map<InfoType, String> errorInfo = new HashMap<>();
+        errorInfo.put(InfoType.VALID, "3");
+        return PasswordRuleResult.createFail(PasswordError.TOO_SHORT, errorInfo);
+    }
+
+    private PasswordRuleResult getMaxLengthErrorResult(){
+        Map<InfoType, String> errorInfo = new HashMap<>();
+        errorInfo.put(InfoType.VALID, "20");
+        return PasswordRuleResult.createFail(PasswordError.TOO_LONG, errorInfo);
+    }
+
+    private PasswordRuleResult getUppercaseErrorResult(){
+        Map<InfoType, String> errorInfo = new HashMap<>();
+        errorInfo.put(InfoType.VALID, "1");
+        return PasswordRuleResult.createFail(PasswordError.UPPERCASE, errorInfo);
+    }
+
+    public PasswordRuleResult getDigitsErrorResult(){
+        Map<InfoType, String> errorInfo = new HashMap<>();
+        errorInfo.put(InfoType.VALID, "1");
+        return PasswordRuleResult.createFail(PasswordError.DIGITS, errorInfo);
+    }
+
+    @Test
+    public void shouldInterruptAfterFailInterruptingRule(){
+        prepareRule(minLengthRule, PasswordRuleResult.createSuccess(), true, passwordData);
+        prepareRule(maxLengthRule, getMaxLengthErrorResult(), true, passwordData);
+        prepareRule(uppercaseRule, getUppercaseErrorResult(), true, passwordData);
+        prepareRule(digitsRule, getDigitsErrorResult(), true, passwordData);
+
+        ValidationResult result = passwordValidator.validate(passwordData);
+        assertFalse(result.isValid());
+        assertEquals(1, result.getErrors().size());
+        assertEquals(PasswordError.TOO_LONG, result.getErrors().get(0).getErrorType());
+
+        prepareRule(minLengthRule, PasswordRuleResult.createSuccess(), true, passwordData);
+        prepareRule(maxLengthRule, getMaxLengthErrorResult(), false, passwordData);
+        prepareRule(uppercaseRule, getUppercaseErrorResult(), true, passwordData);
+        prepareRule(digitsRule, getDigitsErrorResult(), true, passwordData);
+
+        ValidationResult result2 = passwordValidator.validate(passwordData);
+        assertFalse(result2.isValid());
+        assertEquals(2, result2.getErrors().size());
+        assertEquals(PasswordError.TOO_LONG, result2.getErrors().get(0).getErrorType());
+        assertEquals(PasswordError.UPPERCASE, result2.getErrors().get(1).getErrorType());
+    }
+}
