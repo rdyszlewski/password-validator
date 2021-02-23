@@ -1,42 +1,46 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.ErrorDetails;
-import com.farfocle.password_validator.PasswordData;
-import com.farfocle.password_validator.PasswordError;
+import com.farfocle.password_validator.*;
 
-//public class UsernameRule implements Rule {
-//
-//    private ErrorDetails errorDetails;
-//    private boolean interrupting;
-//
-//    public UsernameRule() {
-//        init();
-//    }
-//
-//    public UsernameRule(boolean interrupting) {
-//        init();
-//        this.interrupting = interrupting;
-//    }
-//
-//    private void init() {
-//        errorDetails = new ErrorDetails(PasswordError.USERNAME, null);
-//    }
-//
-//    @Override
-//    public boolean validate(PasswordData password) throws NullPointerException {
-//        if (password == null || password.getPassword() == null || password.getUsername() == null) {
-//            throw new NullPointerException();
-//        }
-//        return !password.getPassword().equals(password.getUsername());
-//    }
-//
-//    @Override
-//    public ErrorDetails getErrorDetails() {
-//        return errorDetails;
-//    }
-//
-//    @Override
-//    public boolean isInterrupting() {
-//        return interrupting;
-//    }
-//}
+import java.util.HashMap;
+import java.util.Map;
+
+public class UsernameRule extends Rule {
+
+    private final PasswordRuleResult successResult;
+    private final PasswordRuleResult failResult;
+
+    private UsernameRule(){
+        this.successResult = PasswordRuleResult.createSuccess();
+        // TODO: zastanowić się, jak to można zrobić
+        this.failResult = PasswordRuleResult.createFail(getErrorType(), null);
+    }
+
+    @Override
+    public PasswordRuleResult validate(PasswordData password) {
+        if(!validateSimple(password)){
+            return successResult;
+        }
+        return failResult;
+    }
+
+    @Override
+    public boolean validateSimple(PasswordData password) {
+        return password.getPassword().equals(password.getUsername());
+    }
+
+    @Override
+    public PasswordError getErrorType() {
+        return PasswordError.USERNAME;
+    }
+
+    public static class Builder extends BaseRuleBuilder<Builder, UsernameRule>{
+
+        @Override
+        public UsernameRule build() {
+            UsernameRule rule = new UsernameRule();
+            super.setup(rule);
+            return rule;
+        }
+    }
+}

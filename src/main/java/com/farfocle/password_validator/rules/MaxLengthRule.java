@@ -4,41 +4,34 @@ import com.farfocle.password_validator.ErrorDetails;
 import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
 
-//public class MaxLengthRule implements Rule {
-//
-//    private int value;
-//    private boolean interrupting;
-//    private ErrorDetails errorDetails;
-//
-//    public MaxLengthRule(int maxLength) {
-//        init(maxLength);
-//    }
-//
-//    public MaxLengthRule(int maxLength, boolean interrupting) {
-//        init(maxLength);
-//        this.interrupting = interrupting;
-//    }
-//
-//    private void init(int maxLength) {
-//        this.value = maxLength;
-//        this.errorDetails = new ErrorDetails(PasswordError.TOO_LONG, String.valueOf(value));
-//    }
-//
-//    @Override
-//    public boolean validate(PasswordData password) {
-//        if (password == null || password.getPassword() == null) {
-//            throw new NullPointerException();
-//        }
-//        return password.getPassword().length() <= value;
-//    }
-//
-//    @Override
-//    public ErrorDetails getErrorDetails() {
-//        return errorDetails;
-//    }
-//
-//    @Override
-//    public boolean isInterrupting() {
-//        return interrupting;
-//    }
-//}
+public class MaxLengthRule extends LengthRule {
+
+
+    protected MaxLengthRule(int value) {
+        super(value);
+    }
+
+    @Override
+    public boolean checkLength(String password) {
+        return password.length() <= getValue();
+    }
+
+    @Override
+    public PasswordError getErrorType() {
+        return PasswordError.TOO_LONG;
+    }
+
+    public static class Builder extends LengthRule.Builder<Builder, MaxLengthRule>{
+
+        public Builder(int value) {
+            super(value);
+        }
+
+        @Override
+        public MaxLengthRule build() {
+            MaxLengthRule rule = new MaxLengthRule(value);
+            super.setup(rule);
+            return rule;
+        }
+    }
+}
