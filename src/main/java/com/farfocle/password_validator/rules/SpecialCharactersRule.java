@@ -2,48 +2,63 @@ package com.farfocle.password_validator.rules;
 
 import com.farfocle.password_validator.PasswordError;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-//public class SpecialCharactersRule extends CharactersRule {
-//
-//    private final String DEFAULT_SPECIALS = "@ % + / \\\\ \\' \\# ! $ ^ : . ( ) { } [ ] ~ _ -";
-//
-//    private Set<Integer> specialCharacters;
-//
-//    private final PasswordError errorType = PasswordError.SPECIAL_CHARACTERS;
-//
-//    public SpecialCharactersRule(int value) {
-//        super(value, PasswordError.SPECIAL_CHARACTERS);
-//        loadSpecialCharacters(null);
-//    }
-//
-//    public SpecialCharactersRule(int value, boolean interrupting) {
-//        super(value, interrupting, PasswordError.SPECIAL_CHARACTERS);
-//        loadSpecialCharacters(null);
-//    }
-//
-//    public SpecialCharactersRule(int value, List<Character> specialCharacters) {
-//        super(value, PasswordError.SPECIAL_CHARACTERS);
-//        loadSpecialCharacters(specialCharacters);
-//    }
-//
-//    public SpecialCharactersRule(int value, boolean interrupting, List<Character> specialCharacters) {
-//        super(value, interrupting, PasswordError.SPECIAL_CHARACTERS);
-//        loadSpecialCharacters(specialCharacters);
-//    }
-//
-//    private void loadSpecialCharacters(List<Character> specialCharacters) {
-//        if (specialCharacters != null) {
-//            this.specialCharacters = specialCharacters.stream().map(x -> (int) x).collect(Collectors.toSet());
-//        } else {
-//            this.specialCharacters = DEFAULT_SPECIALS.chars().filter(x -> !Character.isSpaceChar(x)).map(x -> x).boxed().collect(Collectors.toSet());
-//        }
-//    }
-//
-//    @Override
-//    protected boolean checkCharacter(int character) {
-//        return specialCharacters.contains(character);
-//    }
-//}
+public final class SpecialCharactersRule extends CharactersRule {
+
+    private final Set<Integer> specialCharacters;
+
+    private SpecialCharactersRule(int value, Set<Integer> specialCharacters) {
+        super(value);
+        this.specialCharacters = specialCharacters;
+    }
+
+    @Override
+    protected boolean checkCharacter(int character) {
+        return specialCharacters.contains(character);
+    }
+
+    @Override
+    public PasswordError getErrorType() {
+        return PasswordError.SPECIAL_CHARACTERS;
+    }
+
+    public static class Builder extends CharactersRule.Builder<Builder, SpecialCharactersRule>{
+
+        private final String DEFAULT_SPECIALS = "@ % + / \\\\ \\' \\# ! $ ^ : . ( ) { } [ ] ~ _ -";
+        private Set<Integer> characters;
+
+        public Builder(int value) {
+            super(value);
+        }
+
+        public Builder setCharacters(List<Character> characters){
+            return setCharactersFromCollection(characters);
+        }
+
+        private Builder setCharactersFromCollection(Collection<Character> collection){
+            if(collection != null){
+                this.characters = collection.stream().map(x->(int)x).collect(Collectors.toSet());
+            }
+            return this;
+        }
+
+        public Builder setCharacters(Set<Character> characters){
+             return setCharactersFromCollection(characters);
+        }
+
+        @Override
+        public SpecialCharactersRule build() {
+            Set<Integer> characterSet = this.characters != null ? this.characters :
+                    DEFAULT_SPECIALS.chars().filter(x -> !Character.isSpaceChar(x)).boxed().collect(Collectors.toSet());
+            SpecialCharactersRule rule = new SpecialCharactersRule(value, characterSet);
+            super.setup(rule);
+            return rule;
+        }
+    }
+}

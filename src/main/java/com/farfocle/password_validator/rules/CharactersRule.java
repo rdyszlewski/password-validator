@@ -9,7 +9,7 @@ import java.util.Map;
 
 public abstract class CharactersRule extends Rule {
 
-    protected final int value;
+    private final int value;
 
     private final PasswordRuleResult successResult;
     private final PasswordRuleResult failResult;
@@ -21,6 +21,10 @@ public abstract class CharactersRule extends Rule {
            put(InfoType.VALID, String.valueOf(value));
         }};
         this.failResult = PasswordRuleResult.createFail(getErrorType(), errorInfo);
+    }
+
+    public int getValue(){
+        return this.value;
     }
 
     @Override

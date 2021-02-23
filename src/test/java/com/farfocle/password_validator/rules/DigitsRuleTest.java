@@ -5,9 +5,10 @@ import com.farfocle.password_validator.PasswordError;
 import com.farfocle.password_validator.test_utils.TestUtils;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class DigitsRuleTest {
+
     @Test
     public void shouldReturnFalseWhenNotEnoughDigits() {
         Rule rule = new DigitsRule.Builder(2).build();
@@ -15,7 +16,6 @@ public class DigitsRuleTest {
         TestUtils.testPasswordFail("aa4aa", rule);
         TestUtils.testPasswordFail("2aaaa", rule);
         TestUtils.testPasswordFail("aaaa4", rule);
-
     }
 
     @Test
@@ -39,5 +39,18 @@ public class DigitsRuleTest {
     public void shouldReturnDigitError() {
         Rule rule = new DigitsRule.Builder(2).build();
         assertEquals(PasswordError.DIGITS, rule.getErrorType());
+    }
+
+    @Test
+    public void shouldBuildValidObject(){
+        DigitsRule rule = new DigitsRule.Builder(3).setInterrupting().build();
+        assertTrue(rule.isInterrupting());
+        assertEquals(3, rule.getValue());
+
+        DigitsRule rule2 = new DigitsRule.Builder(2).setInterrupting(true).build();
+        assertTrue(rule2.isInterrupting());
+
+        DigitsRule rule3 = new DigitsRule.Builder(2).setInterrupting(false).build();
+        assertFalse(rule3.isInterrupting());
     }
 }
