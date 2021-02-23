@@ -1,30 +1,35 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
+import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
+import com.farfocle.password_validator.test_utils.TestExceptionUtils;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.farfocle.password_validator.test_utils.TestUtils.*;
+import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordFail;
+import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordSuccess;
 import static org.junit.Assert.assertEquals;
 
 public class SpecialCharactersRuleTest {
 
     @Test
-    public void shouldReturnFalseWhenNotEnoughSpecialCharacters() {
-//        Rule rule = new SpecialCharactersRule(2);
-        Rule rule = new SpecialCharactersRule.Builder(2).build();
+    public void shouldReturnFalseWhenNotEnoughSpecialCharacters() throws InvalidPasswordDataException {
+        Rule rule = createRule(2);
         testPasswordFail("aaaa", rule);
         testPasswordFail("aa}aa", rule);
         testPasswordFail("[aaaa", rule);
         testPasswordFail("aaaa_", rule);
     }
 
+    private SpecialCharactersRule createRule(int value){
+        return new SpecialCharactersRule.Builder(value).build();
+    }
+
     @Test
-    public void shouldReturnTrueWhenEnoughSpecialCharacters() {
-        Rule rule = new SpecialCharactersRule.Builder(2).build();
+    public void shouldReturnTrueWhenEnoughSpecialCharacters() throws InvalidPasswordDataException {
+        Rule rule = createRule(2);
         testPasswordSuccess("//ddd#)(", rule);
         testPasswordSuccess("#_.,()", rule);
         testPasswordSuccess("a#a[a", rule);
@@ -32,15 +37,13 @@ public class SpecialCharactersRuleTest {
 
     @Test
     public void shouldThrowNullPasswordException() {
-        Rule rule = new SpecialCharactersRule.Builder(2).build();
-        testException(null, NullPointerException.class, rule);
+        Rule rule = createRule(2);
+        TestExceptionUtils.testInvalidPasswordDataException(rule);
 
-        PasswordData nullPassword = new PasswordData(null);
-        testException(nullPassword, NullPointerException.class, rule);
     }
 
     @Test
-    public void shouldReturnTrueWhenGetSpecialsFromList() {
+    public void shouldReturnTrueWhenGetSpecialsFromList() throws InvalidPasswordDataException {
         List<Character> list = Arrays.asList('#', '/', '_');
         Rule rule = new SpecialCharactersRule.Builder(2).setCharacters(list).build();
 
@@ -50,7 +53,7 @@ public class SpecialCharactersRuleTest {
 
     @Test
     public void shouldReturnCorrectErrorDetails() {
-        Rule rule = new SpecialCharactersRule.Builder(2).build();
+        Rule rule = createRule(2);
         assertEquals(PasswordError.SPECIAL_CHARACTERS, rule.getErrorType());
     }
 }

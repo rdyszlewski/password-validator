@@ -1,48 +1,51 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
-import com.farfocle.password_validator.test_utils.TestUtils;
+import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
+import com.farfocle.password_validator.test_utils.TestExceptionUtils;
 import org.junit.Test;
 
+import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordFail;
+import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordSuccess;
 import static org.junit.Assert.*;
 
 public class DigitsRuleTest {
 
     @Test
-    public void shouldReturnFalseWhenNotEnoughDigits() {
-        Rule rule = new DigitsRule.Builder(2).build();
-        TestUtils.testPasswordFail("aaaa", rule);
-        TestUtils.testPasswordFail("aa4aa", rule);
-        TestUtils.testPasswordFail("2aaaa", rule);
-        TestUtils.testPasswordFail("aaaa4", rule);
+    public void shouldReturnFalseWhenNotEnoughDigits() throws InvalidPasswordDataException {
+        Rule rule = createRule(2);
+        testPasswordFail("aaaa", rule);
+        testPasswordFail("aa4aa", rule);
+        testPasswordFail("2aaaa", rule);
+        testPasswordFail("aaaa4", rule);
+    }
+
+    private DigitsRule createRule(int value){
+        return new DigitsRule.Builder(value).build();
     }
 
     @Test
-    public void shouldReturnTrueWhenEnoughDigits() {
-        Rule rule = new DigitsRule.Builder(2).build();
-        TestUtils.testPasswordSuccess("13ddd543", rule);
-        TestUtils.testPasswordSuccess("3948392", rule);
-        TestUtils.testPasswordSuccess("a4a4a", rule);
+    public void shouldReturnTrueWhenEnoughDigits() throws InvalidPasswordDataException {
+        Rule rule = createRule(2);
+        testPasswordSuccess("13ddd543", rule);
+        testPasswordSuccess("3948392", rule);
+        testPasswordSuccess("a4a4a", rule);
     }
 
     @Test
     public void shouldThrowNullPasswordException() {
-        Rule rule = new DigitsRule.Builder(2).build();
-        TestUtils.testException(null, NullPointerException.class, rule);
-
-        PasswordData nullPassword = new PasswordData(null);
-        TestUtils.testException(nullPassword, NullPointerException.class, rule);
+        Rule rule = createRule(2);
+        TestExceptionUtils.testInvalidPasswordDataException(rule);
     }
 
     @Test
     public void shouldReturnDigitError() {
-        Rule rule = new DigitsRule.Builder(2).build();
+        Rule rule = createRule(2);
         assertEquals(PasswordError.DIGITS, rule.getErrorType());
     }
 
     @Test
-    public void shouldBuildValidObject(){
+    public void shouldBuildValidObject() {
         DigitsRule rule = new DigitsRule.Builder(3).setInterrupting().build();
         assertTrue(rule.isInterrupting());
         assertEquals(3, rule.getValue());

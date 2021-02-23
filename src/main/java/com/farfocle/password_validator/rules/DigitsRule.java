@@ -18,11 +18,11 @@ public class DigitsRule extends CharactersRule {
         return PasswordError.DIGITS;
     }
 
-    public static Builder builder(int value){
+    public static Builder builder(int value) {
         return new Builder(value);
     }
 
-    public static class Builder extends CharactersRule.Builder<Builder, DigitsRule>{
+    public static class Builder extends CharactersRule.Builder<Builder, DigitsRule> {
 
         public Builder(int value) {
             super(value);

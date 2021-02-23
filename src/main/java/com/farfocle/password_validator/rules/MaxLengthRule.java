@@ -1,7 +1,5 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.ErrorDetails;
-import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
 
 public class MaxLengthRule extends LengthRule {
@@ -21,7 +19,7 @@ public class MaxLengthRule extends LengthRule {
         return PasswordError.TOO_LONG;
     }
 
-    public static class Builder extends LengthRule.Builder<Builder, MaxLengthRule>{
+    public static class Builder extends LengthRule.Builder<Builder, MaxLengthRule> {
 
         public Builder(int value) {
             super(value);

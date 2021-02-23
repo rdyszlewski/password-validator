@@ -1,10 +1,12 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
+import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
+import com.farfocle.password_validator.test_utils.TestExceptionUtils;
 import org.junit.Test;
 
-import static com.farfocle.password_validator.test_utils.TestUtils.*;
+import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordFail;
+import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordSuccess;
 import static org.junit.Assert.*;
 
 public class LowercaseRuleTest {
@@ -12,18 +14,21 @@ public class LowercaseRuleTest {
     // TODO: dodać testy z przyjmowanymi znakami
 
     @Test
-    public void shouldReturnFalseWhenNotEnoughLowercase() {
-//        Rule rule = new LowercaseRule(2);
-        Rule rule = new LowercaseRule.Builder(2).build();
+    public void shouldReturnFalseWhenNotEnoughLowercase() throws InvalidPasswordDataException {
+        Rule rule = createRule(2);
         testPasswordFail("AAAA", rule);
         testPasswordFail("AAaAA", rule);
         testPasswordFail("aAAAA", rule);
         testPasswordFail("AAAAa", rule);
     }
 
+    private Rule createRule(int value){
+        return new LowercaseRule.Builder(value).build();
+    }
+
     @Test
-    public void shouldReturnTrueWhenEnoughLowercase() {
-        Rule rule = new LowercaseRule.Builder(2).build();
+    public void shouldReturnTrueWhenEnoughLowercase() throws InvalidPasswordDataException {
+        Rule rule = createRule(2);
         testPasswordSuccess("AaaAaa", rule);
         testPasswordSuccess("aaaaaa", rule);
         testPasswordSuccess("AaAaA", rule);
@@ -31,22 +36,19 @@ public class LowercaseRuleTest {
 
     @Test
     public void shouldThrowNullPasswordException() {
-        Rule rule = new LowercaseRule.Builder(2).build();
-        testException(null, NullPointerException.class, rule);
-
-        PasswordData nullPassword = new PasswordData(null);
-        testException(nullPassword, NullPointerException.class, rule);
+        Rule rule = createRule(2);
+        TestExceptionUtils.testInvalidPasswordDataException(rule);
     }
 
     @Test
     public void shouldReturnCorrectErrorDetails() {
-        Rule rule = new LowercaseRule.Builder(2).build();
+        Rule rule = createRule(2);
         assertEquals(PasswordError.LOWERCASE, rule.getErrorType());
 
     }
 
     @Test
-    public void shouldBuildRule(){
+    public void shouldBuildRule() {
         // TODO: przepisać to do jednej metody
         LowercaseRule rule = new LowercaseRule.Builder(2).setInterrupting().build();
         assertTrue(rule.isInterrupting());
