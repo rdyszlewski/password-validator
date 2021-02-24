@@ -5,6 +5,11 @@ import com.farfocle.password_validator.PasswordError;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,18 +18,20 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SourceValidationMessageCreatorTest {
+public class FileValidationMessageCreatorTest {
 
-    private ValidationMessageCreator creator;
+    private FileValidationMessageCreator creator;
 
     @Before
-    public void initCreator() {
-        MessageCreatorSource source = new TestMessageSource();
-        creator = new SourceValidationMessageCreator(source);
+    public void initCreator() throws IOException, URISyntaxException {
+        URL url = getClass().getClassLoader().getResource("validation_messages.properties");
+        assert url != null;
+        File file = Paths.get(url.toURI()).toFile();
+        creator = new FileValidationMessageCreator(file);
     }
 
     @Test
-    public void shouldSuccessfullyValidMessageCreator() throws MessageCreatorValidationException {
+    public void shouldSuccessfulValidateMessageCreator() throws IOException, MessageCreatorValidationException, URISyntaxException {
         List<InfoType> minLengthInfo = Collections.singletonList(InfoType.VALID);
         List<InfoType> maxLengthInfo = Collections.singletonList(InfoType.VALID);
         List<InfoType> usernameLengthInfo = Collections.singletonList(InfoType.VALID);
@@ -39,7 +46,7 @@ public class SourceValidationMessageCreatorTest {
     }
 
     @Test
-    public void shouldFailValidationMessageCreator() {
+    public void shouldFailValidationMessageCreator() throws IOException, MessageCreatorValidationException, URISyntaxException {
         List<InfoType> minLengthInfo = Collections.singletonList(InfoType.VALID);
         List<InfoType> maxLengthInfo = new ArrayList<>();
         List<InfoType> usernameLengthInfo = Collections.singletonList(InfoType.VALID);
@@ -48,6 +55,7 @@ public class SourceValidationMessageCreatorTest {
                 new MessageValidationRule(PasswordError.TOO_LONG, maxLengthInfo),
                 new MessageValidationRule(PasswordError.USERNAME, usernameLengthInfo)
         );
+
         try {
             creator.validate(rules);
         } catch (MessageCreatorValidationException e) {
