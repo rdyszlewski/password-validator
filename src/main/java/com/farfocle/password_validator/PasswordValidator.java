@@ -1,5 +1,6 @@
 package com.farfocle.password_validator;
 
+import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.rules.Rule;
 
 import java.util.LinkedList;
@@ -17,7 +18,7 @@ public class PasswordValidator implements IPasswordValidator {
     }
 
     @Override
-    public ValidationResult validate(PasswordData passwordData) {
+    public ValidationResult validate(PasswordData passwordData) throws InvalidPasswordDataException {
         List<ErrorDetails> errors = new LinkedList<>();
         for(Rule rule: rules){
             PasswordRuleResult ruleResult = rule.validate(passwordData);
@@ -37,7 +38,7 @@ public class PasswordValidator implements IPasswordValidator {
     }
 
     @Override
-    public SimpleValidationResult validateErrors(PasswordData passwordData) {
+    public SimpleValidationResult validateErrors(PasswordData passwordData) throws InvalidPasswordDataException {
         List<PasswordError> errors = new LinkedList<>();
         for(Rule rule: rules){
             if(!rule.validateSimple(passwordData)){
@@ -51,14 +52,13 @@ public class PasswordValidator implements IPasswordValidator {
     }
 
     @Override
-    public boolean validateSimple(PasswordData passwordData) {
-        return rules.stream().allMatch(rule->rule.validateSimple(passwordData));
-//        for(Rule rule: rules){
-//            if(!rule.validateSimple(passwordData)){
-//                return false;
-//            }
-//        }
-//        return true;
+    public boolean validateSimple(PasswordData passwordData) throws InvalidPasswordDataException {
+        for(Rule rule: rules){
+            if(!rule.validateSimple(passwordData)){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

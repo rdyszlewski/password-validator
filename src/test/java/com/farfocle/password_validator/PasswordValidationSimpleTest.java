@@ -1,5 +1,6 @@
 package com.farfocle.password_validator;
 
+import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.rules.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class PasswordValidationSimpleTest {
     }
 
     @Test
-    public void shouldReturnTrue(){
+    public void shouldReturnTrue() throws InvalidPasswordDataException {
         prepareRule(minLengthRule, true, false, passwordData);
         prepareRule(maxLengthRule, true, false, passwordData);
         prepareRule(uppercaseRule, true, false, passwordData);
@@ -49,7 +50,7 @@ public class PasswordValidationSimpleTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenAnyRuleIsFail(){
+    public void shouldReturnFalseWhenAnyRuleIsFail() throws InvalidPasswordDataException {
         prepareRule(minLengthRule, false, false, passwordData);
         prepareRule(maxLengthRule, true, false, passwordData);
         prepareRule(uppercaseRule, true, false, passwordData);
@@ -88,7 +89,7 @@ public class PasswordValidationSimpleTest {
 
     // TODO: można dodać jakieś testy, sprawdzające, ile z tych zasad się wykonuje
 
-    private void prepareRule(Rule rule,boolean result, boolean interrupting,  PasswordData password){
+    private void prepareRule(Rule rule,boolean result, boolean interrupting,  PasswordData password) throws InvalidPasswordDataException {
         when(rule.validateSimple(password)).thenReturn(result);
         when(rule.isInterrupting()).thenReturn(interrupting);
     }

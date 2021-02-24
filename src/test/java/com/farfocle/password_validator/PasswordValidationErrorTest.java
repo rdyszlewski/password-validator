@@ -1,5 +1,6 @@
 package com.farfocle.password_validator;
 
+import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.rules.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class PasswordValidationErrorTest {
     }
 
     @Test
-    public void shouldReturnTrue(){
+    public void shouldReturnTrue() throws InvalidPasswordDataException {
         prepareRule(minLengthRule, true, false, passwordData);
         prepareRule(maxLengthRule, true, false, passwordData);
         prepareRule(uppercaseRule, true, false, passwordData);
@@ -50,7 +51,7 @@ public class PasswordValidationErrorTest {
     }
 
     @Test
-    public void shouldNotInterruptWhenValid(){
+    public void shouldNotInterruptWhenValid() throws InvalidPasswordDataException {
         prepareRule(minLengthRule, true, true, passwordData);
         prepareRule(maxLengthRule, true, true, passwordData);
         prepareRule(uppercaseRule, true, true, passwordData);
@@ -62,7 +63,7 @@ public class PasswordValidationErrorTest {
     }
 
     @Test
-    public void shouldReturnInvalidWHenHasErrors(){
+    public void shouldReturnInvalidWHenHasErrors() throws InvalidPasswordDataException {
         prepareRule(minLengthRule, false, false, passwordData);
         prepareRule(maxLengthRule, false, false, passwordData);
         prepareRule(uppercaseRule, false, false, passwordData);
@@ -89,7 +90,7 @@ public class PasswordValidationErrorTest {
     }
 
     @Test
-    public void shouldInterruptAfterFailInInterruptingRule(){
+    public void shouldInterruptAfterFailInInterruptingRule() throws InvalidPasswordDataException {
         prepareRule(minLengthRule, true, true, passwordData);
         prepareRule(maxLengthRule, false, true, passwordData);
         prepareRule(uppercaseRule, false, true, passwordData);
@@ -112,7 +113,7 @@ public class PasswordValidationErrorTest {
         assertEquals(PasswordError.UPPERCASE, result2.getErrors().get(1));
     }
 
-    private void prepareRule(Rule rule,boolean result, boolean interrupting,  PasswordData password){
+    private void prepareRule(Rule rule,boolean result, boolean interrupting,  PasswordData password) throws InvalidPasswordDataException {
         when(rule.validateSimple(password)).thenReturn(result);
         when(rule.isInterrupting()).thenReturn(interrupting);
     }
