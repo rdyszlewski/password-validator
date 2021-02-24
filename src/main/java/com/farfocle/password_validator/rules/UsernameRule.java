@@ -1,9 +1,13 @@
 package com.farfocle.password_validator.rules;
 
+import com.farfocle.password_validator.InfoType;
 import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
 import com.farfocle.password_validator.PasswordRuleResult;
 import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class UsernameRule extends Rule {
 
@@ -35,6 +39,17 @@ public class UsernameRule extends Rule {
     @Override
     public PasswordError getErrorType() {
         return PasswordError.USERNAME;
+    }
+
+    @Override
+    public List<InfoType> getAvailableInfoType() {
+        assert failResult.getErrorInfo() != null;
+        return new LinkedList<>(failResult.getErrorInfo().keySet());
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "The password cannot be the same as the username";
     }
 
     public static class Builder extends BaseRuleBuilder<Builder, UsernameRule> {

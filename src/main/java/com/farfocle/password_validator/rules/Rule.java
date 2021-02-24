@@ -1,9 +1,12 @@
 package com.farfocle.password_validator.rules;
 
+import com.farfocle.password_validator.InfoType;
 import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
 import com.farfocle.password_validator.PasswordRuleResult;
 import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
+
+import java.util.List;
 
 public abstract class Rule {
 
@@ -13,6 +16,13 @@ public abstract class Rule {
         checkData(passwordData);
         return validatePassword(passwordData);
     }
+
+    protected abstract PasswordRuleResult validatePassword(PasswordData password) throws InvalidPasswordDataException;
+    protected abstract boolean validatePasswordSimple(PasswordData password);
+    public abstract PasswordError getErrorType();
+    public abstract List<InfoType> getAvailableInfoType();
+    public abstract String getErrorMessage();
+
 
     private void checkData(PasswordData passwordData) throws InvalidPasswordDataException {
         if (passwordData == null) {
@@ -27,12 +37,6 @@ public abstract class Rule {
         checkData(passwordData);
         return validatePasswordSimple(passwordData);
     }
-
-    protected abstract PasswordRuleResult validatePassword(PasswordData password) throws InvalidPasswordDataException;
-
-    protected abstract boolean validatePasswordSimple(PasswordData password);
-
-    public abstract PasswordError getErrorType();
 
     public boolean isInterrupting() {
         return interrupting;

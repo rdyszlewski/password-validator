@@ -4,8 +4,11 @@ import com.farfocle.password_validator.InfoType;
 import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordRuleResult;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class CharactersRule extends Rule {
 
@@ -52,6 +55,12 @@ public abstract class CharactersRule extends Rule {
     }
 
     protected abstract boolean checkCharacter(int character);
+
+    @Override
+    public List<InfoType> getAvailableInfoType() {
+        assert failResult.getErrorInfo() != null;
+        return new ArrayList<>(failResult.getErrorInfo().keySet());
+    }
 
     static abstract class Builder<T extends Builder<T, K>, K extends CharactersRule> extends BaseRuleBuilder<T, K> {
 

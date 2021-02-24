@@ -2,6 +2,7 @@ package com.farfocle.password_validator.rules;
 
 import com.farfocle.password_validator.PasswordError;
 
+
 public class DigitsRule extends CharactersRule {
 
     private DigitsRule(int value) {
@@ -16,6 +17,11 @@ public class DigitsRule extends CharactersRule {
     @Override
     public PasswordError getErrorType() {
         return PasswordError.DIGITS;
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return String.format("Too few digits. %d digits is required", getValue());
     }
 
     public static Builder builder(int value) {

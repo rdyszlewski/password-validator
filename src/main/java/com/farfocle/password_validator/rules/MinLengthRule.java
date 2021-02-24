@@ -19,6 +19,11 @@ public class MinLengthRule extends LengthRule {
         return PasswordError.TOO_SHORT;
     }
 
+    @Override
+    public String getErrorMessage() {
+        return String.format("Too much characters. Maximum %d characters are allowed", getValue());
+    }
+
     public static class Builder extends LengthRule.Builder<Builder, MinLengthRule> {
 
         public Builder(int value) {

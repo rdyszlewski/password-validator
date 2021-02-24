@@ -19,6 +19,11 @@ public class UppercaseRule extends CharactersRule {
         return PasswordError.UPPERCASE;
     }
 
+    @Override
+    public String getErrorMessage() {
+        return String.format("Too few uppercase characters. %d uppercase characters is required", getValue());
+    }
+
     public static class Builder extends CharactersRule.Builder<Builder, UppercaseRule> {
 
         public Builder(int value) {

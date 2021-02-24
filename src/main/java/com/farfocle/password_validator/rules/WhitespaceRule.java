@@ -1,9 +1,12 @@
 package com.farfocle.password_validator.rules;
 
+import com.farfocle.password_validator.InfoType;
 import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
 import com.farfocle.password_validator.PasswordRuleResult;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +42,18 @@ public class WhitespaceRule extends Rule {
     @Override
     public PasswordError getErrorType() {
         return PasswordError.WHITESPACE;
+    }
+
+    @Override
+    public List<InfoType> getAvailableInfoType() {
+
+        assert failResult.getErrorInfo() != null;
+        return new LinkedList<>(failResult.getErrorInfo().keySet());
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "The password cannot contain spaces";
     }
 
     public static class Builder extends BaseRuleBuilder<Builder, WhitespaceRule> {

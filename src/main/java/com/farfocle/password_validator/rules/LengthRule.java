@@ -5,8 +5,7 @@ import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
 import com.farfocle.password_validator.PasswordRuleResult;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class LengthRule extends Rule {
 
@@ -44,6 +43,12 @@ public abstract class LengthRule extends Rule {
     public abstract boolean checkLength(String password);
 
     public abstract PasswordError getErrorType();
+
+    @Override
+    public List<InfoType> getAvailableInfoType() {
+        assert failResult.getErrorInfo() != null;
+        return new LinkedList<>(failResult.getErrorInfo().keySet());
+    }
 
     protected static abstract class Builder<T extends Builder<T, K>, K extends LengthRule> extends BaseRuleBuilder<T, K> {
 

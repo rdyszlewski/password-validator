@@ -26,6 +26,12 @@ public final class SpecialCharactersRule extends CharactersRule {
         return PasswordError.SPECIAL_CHARACTERS;
     }
 
+    @Override
+    public String getErrorMessage() {
+        return String.format("Too few special characters. %d special characters is required", getValue());
+
+    }
+
     public static class Builder extends CharactersRule.Builder<Builder, SpecialCharactersRule> {
 
         private final String DEFAULT_SPECIALS = "@ % + / \\\\ \\' \\# ! $ ^ : . ( ) { } [ ] ~ _ -";

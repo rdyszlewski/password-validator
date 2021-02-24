@@ -35,7 +35,7 @@ public class SourceValidationMessageCreator implements ValidationMessageCreator 
             PasswordRuleResult testResult = PasswordRuleResult.createFail(rule.getError(), map);
             String message = getMessage(testResult);
             if (message.contains("null")) {
-                for (InfoType infoType : rule.getAvailableInfo()) {
+                for (InfoType infoType : InfoType.values()) {
                     if (!message.contains(infoType.name())) {
                         throw new MessageCreatorValidationException(rule.getError(), infoType);
                     }

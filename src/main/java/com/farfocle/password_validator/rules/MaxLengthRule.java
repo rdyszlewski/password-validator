@@ -1,6 +1,9 @@
 package com.farfocle.password_validator.rules;
 
+import com.farfocle.password_validator.InfoType;
 import com.farfocle.password_validator.PasswordError;
+
+import java.util.List;
 
 public class MaxLengthRule extends LengthRule {
 
@@ -17,6 +20,13 @@ public class MaxLengthRule extends LengthRule {
     @Override
     public PasswordError getErrorType() {
         return PasswordError.TOO_LONG;
+    }
+
+
+
+    @Override
+    public String getErrorMessage() {
+        return String.format("Too few characters. %d characters is required", getValue());
     }
 
     public static class Builder extends LengthRule.Builder<Builder, MaxLengthRule> {

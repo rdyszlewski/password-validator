@@ -18,6 +18,12 @@ public class LowercaseRule extends CharactersRule {
         return PasswordError.LOWERCASE;
     }
 
+    @Override
+    public String getErrorMessage() {
+        return String.format("Too few lowercase characters. %d lowercase characters is required", getValue());
+
+    }
+
     public static class Builder extends CharactersRule.Builder<Builder, LowercaseRule> {
 
         public Builder(int value) {
