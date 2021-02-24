@@ -1,5 +1,6 @@
 package com.farfocle.password_validator;
 
+import com.farfocle.password_validator.cache.ErrorDetailsCache;
 import com.farfocle.password_validator.rules.Rule;
 
 import java.util.LinkedList;
@@ -10,10 +11,12 @@ public class PasswordValidator implements IPasswordValidator {
 
     private final List<Rule> rules;
     private final List<PasswordError> availableErrors;
+    private final ErrorDetailsCache errorDetailsCache;
 
     public PasswordValidator(final List<Rule> rules){
         this.rules = rules;
         availableErrors = rules.stream().map(Rule::getErrorType).collect(Collectors.toUnmodifiableList());
+        this.errorDetailsCache = new ErrorDetailsCache(500);
     }
 
     @Override
@@ -22,7 +25,9 @@ public class PasswordValidator implements IPasswordValidator {
         for(Rule rule: rules){
             PasswordRuleResult ruleResult = rule.validate(passwordData);
             if(!ruleResult.isValid()){
-                errors.add(getErrorDetails(ruleResult));
+                ErrorDetails details = errorDetailsCache.getErrorDetails(ruleResult, x -> new ErrorDetails(x.getErrorType(), x.getErrorInfo(), null));
+                errors.add(details);
+//                errors.add(getErrorDetails(ruleResult));
                 if(rule.isInterrupting()){
                     return new ValidationResult(errors);
                 }
