@@ -3,32 +3,55 @@ package com.farfocle.password_validator.rules;
 import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
 import com.farfocle.password_validator.PasswordRuleResult;
+import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 
 public abstract class Rule {
 
     private boolean interrupting;
 
-    public abstract PasswordRuleResult validate(PasswordData password);
-    public abstract boolean validateSimple(PasswordData password);
+    public PasswordRuleResult validate(PasswordData passwordData) throws InvalidPasswordDataException {
+        checkData(passwordData);
+        return validatePassword(passwordData);
+    }
+
+    private void checkData(PasswordData passwordData) throws InvalidPasswordDataException {
+        if (passwordData == null) {
+            throw new InvalidPasswordDataException(InvalidPasswordDataException.Type.DATA_NULL);
+        }
+        if (passwordData.getPassword() == null) {
+            throw new InvalidPasswordDataException(InvalidPasswordDataException.Type.PASSWORD_NULL);
+        }
+    }
+
+    public boolean validateSimple(PasswordData passwordData) throws InvalidPasswordDataException {
+        checkData(passwordData);
+        return validatePasswordSimple(passwordData);
+    }
+
+    protected abstract PasswordRuleResult validatePassword(PasswordData password) throws InvalidPasswordDataException;
+
+    protected abstract boolean validatePasswordSimple(PasswordData password);
+
     public abstract PasswordError getErrorType();
 
-    public boolean isInterrupting(){
+    public boolean isInterrupting() {
         return interrupting;
     }
 
-    static abstract class BaseRuleBuilder <T extends BaseRuleBuilder<T,K>, K extends Rule>{
+    static abstract class BaseRuleBuilder<T extends BaseRuleBuilder<T, K>, K extends Rule> {
 
         private boolean interrupting;
 
-        public T setInterrupting(){
+        public T setInterrupting() {
             return setInterrupting(true);
         }
-        public T setInterrupting(boolean interrupting){
+
+        public T setInterrupting(boolean interrupting) {
             this.interrupting = interrupting;
-            return (T)this;
+            return (T) this;
         }
 
-        protected void setup(Rule rule){
+        protected void setup(Rule rule) {
             rule.interrupting = interrupting;
         }
 

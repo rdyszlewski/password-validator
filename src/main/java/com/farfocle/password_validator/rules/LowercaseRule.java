@@ -18,7 +18,7 @@ public class LowercaseRule extends CharactersRule {
         return PasswordError.LOWERCASE;
     }
 
-    public static class Builder extends CharactersRule.Builder<Builder, LowercaseRule>{
+    public static class Builder extends CharactersRule.Builder<Builder, LowercaseRule> {
 
         public Builder(int value) {
             super(value);

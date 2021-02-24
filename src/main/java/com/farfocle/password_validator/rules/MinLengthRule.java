@@ -1,7 +1,5 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.ErrorDetails;
-import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
 
 
@@ -21,7 +19,7 @@ public class MinLengthRule extends LengthRule {
         return PasswordError.TOO_SHORT;
     }
 
-    public static class Builder extends LengthRule.Builder<Builder, MinLengthRule>{
+    public static class Builder extends LengthRule.Builder<Builder, MinLengthRule> {
 
         public Builder(int value) {
             super(value);

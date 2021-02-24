@@ -2,26 +2,41 @@ package com.farfocle.password_validator.test_utils;
 
 import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordRuleResult;
-import com.farfocle.password_validator.ValidationResult;
+import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.rules.Rule;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
 
 public class TestUtils {
 
-    public static void testPasswordSuccess(String password, Rule rule) {
+    public static void testPasswordSuccess(String password, Rule rule) throws InvalidPasswordDataException {
         PasswordData passwordData = new PasswordData(password);
         PasswordRuleResult result = rule.validate(passwordData);
-        assertTrue(result.isValid());
-        assertNull(result.getErrorType());
-        assertNull(result.getErrorInfo());
+        assertThat(result.isValid()).as(password).isTrue();
+        assertThat(result.getErrorType()).as(password).isNull();
+        assertThat(result.getErrorInfo()).as(password).isNull();
     }
 
-    public static void testPasswordFail(String password, Rule rule) {
-        PasswordData almostPassword = new PasswordData(password);
-        assertFalse(rule.validate(almostPassword).isValid());
+    public static void testSuccessAll(List<String> passwords, Rule rule) throws InvalidPasswordDataException {
+        for (String password : passwords) {
+            testPasswordSuccess(password, rule);
+        }
+    }
+
+    public static void testPasswordFail(String password, Rule rule) throws InvalidPasswordDataException {
+        PasswordData passwordData = new PasswordData(password);
+        assertThat(rule.validate(passwordData).isValid()).as(password).isFalse();
         // TODO: tutaj dodać testy, czy zawiera odpowiednie elementy
+    }
+
+    public static void testFailAll(List<String> passwords, Rule rule) throws InvalidPasswordDataException {
+        for (String password : passwords) {
+            testPasswordFail(password, rule);
+        }
     }
 
     public static void testException(PasswordData data, Class<?> type, Rule rule) {

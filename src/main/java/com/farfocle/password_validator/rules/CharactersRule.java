@@ -14,55 +14,55 @@ public abstract class CharactersRule extends Rule {
     private final PasswordRuleResult successResult;
     private final PasswordRuleResult failResult;
 
-    public CharactersRule(int value){
+    public CharactersRule(int value) {
         this.value = value;
         this.successResult = PasswordRuleResult.createSuccess();
-        Map<InfoType, String> errorInfo = new HashMap<InfoType, String>(){{
-           put(InfoType.VALID, String.valueOf(value));
+        Map<InfoType, String> errorInfo = new HashMap<InfoType, String>() {{
+            put(InfoType.VALID, String.valueOf(value));
         }};
         this.failResult = PasswordRuleResult.createFail(getErrorType(), errorInfo);
     }
 
-    public int getValue(){
+    public int getValue() {
         return this.value;
     }
 
     @Override
-    public PasswordRuleResult validate(PasswordData passwordData){
+    public PasswordRuleResult validatePassword(PasswordData passwordData) {
         long validCharactersCount = countValidCharacters(passwordData.getPassword());
         // TODO: zrobić tutaj też przygotowanie specjalnej odpowiedzi
-        if(checkValid(validCharactersCount)){
+        if (checkValid(validCharactersCount)) {
             return successResult;
         }
         return failResult;
     }
 
     @Override
-    public boolean validateSimple(PasswordData passwordData){
+    public boolean validatePasswordSimple(PasswordData passwordData) {
         long validCharactersCount = countValidCharacters(passwordData.getPassword());
         return checkValid(validCharactersCount);
     }
 
-    private boolean checkValid(long validCharactersCount){
+    private boolean checkValid(long validCharactersCount) {
         return validCharactersCount >= this.value;
     }
 
-    private long countValidCharacters(String password){
+    private long countValidCharacters(String password) {
         return password.chars().filter(this::checkCharacter).limit(value).count();
     }
 
     protected abstract boolean checkCharacter(int character);
 
-    static abstract class Builder<T extends Builder<T, K>, K extends CharactersRule> extends BaseRuleBuilder<T, K>{
+    static abstract class Builder<T extends Builder<T, K>, K extends CharactersRule> extends BaseRuleBuilder<T, K> {
 
         protected int value;
 
-        public Builder(int value){
+        public Builder(int value) {
             super();
             this.value = value;
         }
 
-        protected void setup(Rule rule){
+        protected void setup(Rule rule) {
             super.setup(rule);
         }
 

@@ -2,12 +2,10 @@ package com.farfocle.password_validator.rules;
 
 import com.farfocle.password_validator.PasswordError;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class SpecialCharactersRule extends CharactersRule {
 
@@ -28,7 +26,7 @@ public final class SpecialCharactersRule extends CharactersRule {
         return PasswordError.SPECIAL_CHARACTERS;
     }
 
-    public static class Builder extends CharactersRule.Builder<Builder, SpecialCharactersRule>{
+    public static class Builder extends CharactersRule.Builder<Builder, SpecialCharactersRule> {
 
         private final String DEFAULT_SPECIALS = "@ % + / \\\\ \\' \\# ! $ ^ : . ( ) { } [ ] ~ _ -";
         private Set<Integer> characters;
@@ -37,19 +35,19 @@ public final class SpecialCharactersRule extends CharactersRule {
             super(value);
         }
 
-        public Builder setCharacters(List<Character> characters){
+        public Builder setCharacters(List<Character> characters) {
             return setCharactersFromCollection(characters);
         }
 
-        private Builder setCharactersFromCollection(Collection<Character> collection){
-            if(collection != null){
-                this.characters = collection.stream().map(x->(int)x).collect(Collectors.toSet());
+        private Builder setCharactersFromCollection(Collection<Character> collection) {
+            if (collection != null) {
+                this.characters = collection.stream().map(x -> (int) x).collect(Collectors.toSet());
             }
             return this;
         }
 
-        public Builder setCharacters(Set<Character> characters){
-             return setCharactersFromCollection(characters);
+        public Builder setCharacters(Set<Character> characters) {
+            return setCharactersFromCollection(characters);
         }
 
         @Override

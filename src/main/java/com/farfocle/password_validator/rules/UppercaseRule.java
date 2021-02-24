@@ -19,7 +19,7 @@ public class UppercaseRule extends CharactersRule {
         return PasswordError.UPPERCASE;
     }
 
-    public static class Builder extends CharactersRule.Builder<Builder, UppercaseRule>{
+    public static class Builder extends CharactersRule.Builder<Builder, UppercaseRule> {
 
         public Builder(int value) {
             super(value);

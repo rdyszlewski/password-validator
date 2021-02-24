@@ -1,6 +1,5 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.ErrorDetails;
 import com.farfocle.password_validator.PasswordData;
 import com.farfocle.password_validator.PasswordError;
 import com.farfocle.password_validator.PasswordRuleResult;
@@ -16,7 +15,7 @@ public class WhitespaceRule extends Rule {
     private final PasswordRuleResult successResult;
     private final PasswordRuleResult failResult;
 
-    private WhitespaceRule(){
+    private WhitespaceRule() {
         pattern = Pattern.compile(PATTERN);
         successResult = PasswordRuleResult.createSuccess();
         // TODO: przemyśleć, czy tutaj powinny być wstawione jakieś informacje
@@ -24,15 +23,15 @@ public class WhitespaceRule extends Rule {
     }
 
     @Override
-    public PasswordRuleResult validate(PasswordData password) {
-        if(validateSimple(password)){
+    public PasswordRuleResult validatePassword(PasswordData password) {
+        if (validatePasswordSimple(password)) {
             return successResult;
         }
         return failResult;
     }
 
     @Override
-    public boolean validateSimple(PasswordData password) {
+    public boolean validatePasswordSimple(PasswordData password) {
         Matcher matcher = pattern.matcher(password.getPassword());
         return !matcher.find();
     }
@@ -42,7 +41,7 @@ public class WhitespaceRule extends Rule {
         return PasswordError.WHITESPACE;
     }
 
-    public static class Builder extends BaseRuleBuilder<Builder, WhitespaceRule>{
+    public static class Builder extends BaseRuleBuilder<Builder, WhitespaceRule> {
 
         @Override
         public WhitespaceRule build() {
