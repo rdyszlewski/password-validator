@@ -6,7 +6,10 @@ import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.test_utils.TestExceptionUtils;
 import org.junit.Test;
 
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordFail;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.farfocle.password_validator.test_utils.TestUtils.testFailAll;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -15,15 +18,18 @@ public class WhitespaceRuleTest {
     @Test
     public void shouldReturnFalseWhenWhitespace() throws InvalidPasswordDataException {
         Rule rule = createRule();
-        testPasswordFail("jdkla dajl", rule);
-        testPasswordFail(" sadjklas", rule);
-        testPasswordFail("das\tdas", rule);
-        testPasswordFail("das\nsada", rule);
+        List<String> passwords = Arrays.asList(
+                "jdkla dajl",
+                " sadjklas",
+                "das\tdas",
+                "das\nsada"
+        );
+        testFailAll(passwords, rule);
 
         // TODO: dodać inne znaki
     }
 
-    private WhitespaceRule createRule(){
+    private WhitespaceRule createRule() {
         return new WhitespaceRule.Builder().build();
     }
 

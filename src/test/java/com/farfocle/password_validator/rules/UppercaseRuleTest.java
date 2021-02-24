@@ -5,8 +5,11 @@ import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.test_utils.TestExceptionUtils;
 import org.junit.Test;
 
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordFail;
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordSuccess;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.farfocle.password_validator.test_utils.TestUtils.testFailAll;
+import static com.farfocle.password_validator.test_utils.TestUtils.testSuccessAll;
 import static org.junit.Assert.assertEquals;
 
 public class UppercaseRuleTest {
@@ -16,22 +19,28 @@ public class UppercaseRuleTest {
     @Test
     public void shouldReturnFalseWhenNotEnoughUppercase() throws InvalidPasswordDataException {
         Rule rule = createRule(2);
-        testPasswordFail("aaaa", rule);
-        testPasswordFail("aaAaa", rule);
-        testPasswordFail("Aaaaa", rule);
-        testPasswordFail("aaaaZ", rule);
+        List<String> passwords = Arrays.asList(
+                "aaaa",
+                "aaAaa",
+                "Aaaaa",
+                "aaaaZ"
+        );
+        testFailAll(passwords, rule);
     }
 
-    private UppercaseRule createRule(int value){
+    private UppercaseRule createRule(int value) {
         return new UppercaseRule.Builder(value).build();
     }
 
     @Test
     public void shouldReturnTrueWhenEnoughUppercase() throws InvalidPasswordDataException {
         Rule rule = createRule(2);
-        testPasswordSuccess("ACdddADP", rule);
-        testPasswordSuccess("AADJKJDLAJD", rule);
-        testPasswordSuccess("aAaAa", rule);
+        List<String> passwords = Arrays.asList(
+                "ACdddADP",
+                "AADJKJDLAJD",
+                "aAaAa"
+        );
+        testSuccessAll(passwords, rule);
     }
 
     @Test
@@ -44,9 +53,12 @@ public class UppercaseRuleTest {
     @Test
     public void shouldReturnTrueWhenNationalCharacters() throws InvalidPasswordDataException {
         Rule rule = createRule(2);
-        testPasswordSuccess("kŚoĆte", rule);
-        testPasswordSuccess("kjiĘOs", rule);
-        testPasswordSuccess("ÖOppppp", rule);
+        List<String> passwords = Arrays.asList(
+                "kŚoĆte",
+                "kjiĘOs",
+                "ÖOppppp"
+        );
+        testSuccessAll(passwords, rule);
     }
 
     @Test

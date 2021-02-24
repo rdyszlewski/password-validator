@@ -5,8 +5,11 @@ import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.test_utils.TestExceptionUtils;
 import org.junit.Test;
 
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordFail;
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordSuccess;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.farfocle.password_validator.test_utils.TestUtils.testFailAll;
+import static com.farfocle.password_validator.test_utils.TestUtils.testSuccessAll;
 import static org.junit.Assert.*;
 
 public class LowercaseRuleTest {
@@ -16,22 +19,28 @@ public class LowercaseRuleTest {
     @Test
     public void shouldReturnFalseWhenNotEnoughLowercase() throws InvalidPasswordDataException {
         Rule rule = createRule(2);
-        testPasswordFail("AAAA", rule);
-        testPasswordFail("AAaAA", rule);
-        testPasswordFail("aAAAA", rule);
-        testPasswordFail("AAAAa", rule);
+        List<String> passwords = Arrays.asList(
+                "AAAA",
+                "AAaAA",
+                "aAAAA",
+                "AAAAa"
+        );
+        testFailAll(passwords, rule);
     }
 
-    private Rule createRule(int value){
+    private Rule createRule(int value) {
         return new LowercaseRule.Builder(value).build();
     }
 
     @Test
     public void shouldReturnTrueWhenEnoughLowercase() throws InvalidPasswordDataException {
         Rule rule = createRule(2);
-        testPasswordSuccess("AaaAaa", rule);
-        testPasswordSuccess("aaaaaa", rule);
-        testPasswordSuccess("AaAaA", rule);
+        List<String> passwords = Arrays.asList(
+                "AaaAaa",
+                "aaaaaa",
+                "AaAaA"
+        );
+        testSuccessAll(passwords, rule);
     }
 
     @Test

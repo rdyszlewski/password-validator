@@ -8,8 +8,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordFail;
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordSuccess;
+import static com.farfocle.password_validator.test_utils.TestUtils.*;
 import static org.junit.Assert.assertEquals;
 
 public class SpecialCharactersRuleTest {
@@ -17,22 +16,28 @@ public class SpecialCharactersRuleTest {
     @Test
     public void shouldReturnFalseWhenNotEnoughSpecialCharacters() throws InvalidPasswordDataException {
         Rule rule = createRule(2);
-        testPasswordFail("aaaa", rule);
-        testPasswordFail("aa}aa", rule);
-        testPasswordFail("[aaaa", rule);
-        testPasswordFail("aaaa_", rule);
+        List<String> passwords = Arrays.asList(
+                "aaaa",
+                "aa}aa",
+                "[aaaa",
+                "aaaa-"
+        );
+        testFailAll(passwords, rule);
     }
 
-    private SpecialCharactersRule createRule(int value){
+    private SpecialCharactersRule createRule(int value) {
         return new SpecialCharactersRule.Builder(value).build();
     }
 
     @Test
     public void shouldReturnTrueWhenEnoughSpecialCharacters() throws InvalidPasswordDataException {
         Rule rule = createRule(2);
-        testPasswordSuccess("//ddd#)(", rule);
-        testPasswordSuccess("#_.,()", rule);
-        testPasswordSuccess("a#a[a", rule);
+        List<String> passwords = Arrays.asList(
+                "//ddd#)(",
+                "#_.,()",
+                "a#a[a"
+        );
+        testSuccessAll(passwords, rule);
     }
 
     @Test

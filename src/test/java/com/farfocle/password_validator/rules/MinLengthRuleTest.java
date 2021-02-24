@@ -5,8 +5,11 @@ import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.test_utils.TestExceptionUtils;
 import org.junit.Test;
 
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordFail;
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordSuccess;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.farfocle.password_validator.test_utils.TestUtils.testFailAll;
+import static com.farfocle.password_validator.test_utils.TestUtils.testSuccessAll;
 import static org.junit.Assert.assertEquals;
 
 public class MinLengthRuleTest {
@@ -14,21 +17,27 @@ public class MinLengthRuleTest {
     @Test
     public void shouldReturnFalseWhenPasswordTooShort() throws InvalidPasswordDataException {
         Rule rule = createRule(5);
-        testPasswordFail("", rule);
-        testPasswordFail("a", rule);
-        testPasswordFail("aaaa", rule);
+        List<String> passwords = Arrays.asList(
+                "",
+                "a",
+                "aaaa"
+        );
+        testFailAll(passwords, rule);
     }
 
-    private MinLengthRule createRule(int value){
+    private MinLengthRule createRule(int value) {
         return new MinLengthRule.Builder(value).build();
     }
 
     @Test
     public void shouldReturnTrueWhenPasswordIsCorrect() throws InvalidPasswordDataException {
         Rule rule = createRule(5);
-        testPasswordSuccess("aaaaa", rule);
-        testPasswordSuccess("aaaaaaaaaaaaaa", rule);
-        testPasswordSuccess("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", rule);
+        List<String> passwords = Arrays.asList(
+                "aaaaa",
+                "aaaaaaaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        );
+        testSuccessAll(passwords, rule);
     }
 
     @Test
@@ -41,10 +50,13 @@ public class MinLengthRuleTest {
     @Test
     public void shouldReturnTrueWhenNotCharacters() throws InvalidPasswordDataException {
         Rule rule = createRule(5);
-        testPasswordSuccess("#$%#$%", rule);
-        testPasswordSuccess("śćśśśść", rule);
-        testPasswordSuccess("1123131", rule);
-        testPasswordSuccess("1#śPo5", rule);
+        List<String> passwords = Arrays.asList(
+                "#$%#$%",
+                "śćśśśść",
+                "1123131",
+                "1#śPo5"
+        );
+        testSuccessAll(passwords, rule);
     }
 
     @Test

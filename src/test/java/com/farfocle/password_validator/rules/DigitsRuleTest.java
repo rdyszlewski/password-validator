@@ -5,8 +5,11 @@ import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.test_utils.TestExceptionUtils;
 import org.junit.Test;
 
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordFail;
-import static com.farfocle.password_validator.test_utils.TestUtils.testPasswordSuccess;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.farfocle.password_validator.test_utils.TestUtils.testFailAll;
+import static com.farfocle.password_validator.test_utils.TestUtils.testSuccessAll;
 import static org.junit.Assert.*;
 
 public class DigitsRuleTest {
@@ -14,22 +17,29 @@ public class DigitsRuleTest {
     @Test
     public void shouldReturnFalseWhenNotEnoughDigits() throws InvalidPasswordDataException {
         Rule rule = createRule(2);
-        testPasswordFail("aaaa", rule);
-        testPasswordFail("aa4aa", rule);
-        testPasswordFail("2aaaa", rule);
-        testPasswordFail("aaaa4", rule);
+        List<String> passwords = Arrays.asList(
+                "aaaa",
+                "aa4aa",
+                "2aaaa",
+                "aaaa4"
+        );
+        testFailAll(passwords, rule);
     }
 
-    private DigitsRule createRule(int value){
+    private DigitsRule createRule(int value) {
         return new DigitsRule.Builder(value).build();
     }
 
     @Test
     public void shouldReturnTrueWhenEnoughDigits() throws InvalidPasswordDataException {
         Rule rule = createRule(2);
-        testPasswordSuccess("13ddd543", rule);
-        testPasswordSuccess("3948392", rule);
-        testPasswordSuccess("a4a4a", rule);
+        List<String> passwords = Arrays.asList(
+                "13ddd543",
+                "3948392",
+                "a4a4a"
+
+        );
+        testSuccessAll(passwords, rule);
     }
 
     @Test

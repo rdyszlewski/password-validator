@@ -19,7 +19,7 @@ public class UsernameRuleTest {
         assertFalse(rule.validate(passwordData).isValid());
     }
 
-    private UsernameRule createRule(){
+    private UsernameRule createRule() {
         return new UsernameRule.Builder().build();
     }
 
@@ -39,14 +39,14 @@ public class UsernameRuleTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenDataIsEmpty(){
+    public void shouldThrowExceptionWhenDataIsEmpty() {
         Rule rule = createRule();
         TestExceptionUtils.testInvalidPasswordDataException(rule);
         PasswordData passwordData = new PasswordData("sa", null);
         testException(passwordData, InvalidPasswordDataException.class, rule);
-        try{
+        try {
             rule.validate(passwordData);
-        } catch (InvalidPasswordDataException e){
+        } catch (InvalidPasswordDataException e) {
             assertEquals(InvalidPasswordDataException.Type.USERNAME_NULL, e.getErrorType());
         }
     }
