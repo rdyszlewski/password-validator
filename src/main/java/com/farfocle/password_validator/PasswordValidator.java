@@ -1,6 +1,7 @@
 package com.farfocle.password_validator;
 
 import com.farfocle.password_validator.cache.ErrorDetailsCache;
+import com.farfocle.password_validator.message_creator.ValidationMessageCreator;
 import com.farfocle.password_validator.rules.Rule;
 
 import java.util.LinkedList;
@@ -11,12 +12,23 @@ public class PasswordValidator implements IPasswordValidator {
 
     private final List<Rule> rules;
     private final List<PasswordError> availableErrors;
-    private final ErrorDetailsCache errorDetailsCache;
+    private ErrorDetailsCache errorDetailsCache;
+    private ValidationMessageCreator errorMessageCreator;
 
     public PasswordValidator(final List<Rule> rules){
         this.rules = rules;
         availableErrors = rules.stream().map(Rule::getErrorType).collect(Collectors.toUnmodifiableList());
-        this.errorDetailsCache = new ErrorDetailsCache(500);
+    }
+
+    public void setCache(int size){
+        errorDetailsCache = new ErrorDetailsCache(size);
+    }
+
+    public void setMessageCreator(ValidationMessageCreator creator){
+        assert creator != null;
+        // TODO: przygotować dane do walidacji
+        // TODO: uruchomić walidację
+        this.errorMessageCreator = creator;
     }
 
     @Override
@@ -25,9 +37,7 @@ public class PasswordValidator implements IPasswordValidator {
         for(Rule rule: rules){
             PasswordRuleResult ruleResult = rule.validate(passwordData);
             if(!ruleResult.isValid()){
-                ErrorDetails details = errorDetailsCache.getErrorDetails(ruleResult, x -> new ErrorDetails(x.getErrorType(), x.getErrorInfo(), null));
-                errors.add(details);
-//                errors.add(getErrorDetails(ruleResult));
+                errors.add(getErrorDetails(ruleResult, rule));
                 if(rule.isInterrupting()){
                     return new ValidationResult(errors);
                 }
@@ -36,9 +46,23 @@ public class PasswordValidator implements IPasswordValidator {
         return new ValidationResult(errors);
     }
 
-    public ErrorDetails getErrorDetails(PasswordRuleResult ruleResult){
-        // TODO: doadć tutaj jakiś cache do tego
+    private ErrorDetails getErrorDetails(PasswordRuleResult ruleResult, Rule rule){
+        if(errorDetailsCache != null){
+            return errorDetailsCache.getErrorDetails(ruleResult, x-> createErrorDetails(ruleResult, rule));
+        }
+        return createErrorDetails(ruleResult, rule);
+    }
+
+    private ErrorDetails createErrorDetails(PasswordRuleResult ruleResult, Rule rule){
         return new ErrorDetails(ruleResult.getErrorType(), ruleResult.getErrorInfo(), null);
+    }
+
+    private String getErrorMessage(PasswordRuleResult ruleResult, Rule rule){
+        if(errorMessageCreator != null){
+            return errorMessageCreator.getMessage(ruleResult);
+        }
+        // TODO: zwrócić standardową wiadomość z regułyu
+        return "";
     }
 
     @Override
