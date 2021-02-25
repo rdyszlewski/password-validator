@@ -30,7 +30,6 @@ public class PasswordValidator implements IPasswordValidator {
 
     public void setErrorMessageCreator(ValidationMessageCreator creator) throws MessageCreatorValidationException {
         assert creator != null;
-        // TODO: zrobić walidację
         List<MessageValidationRule> messageValidationRules = prepareMessageValidationRules();
         if(creator.validate(messageValidationRules)){
             this.errorMessageCreator = creator;
@@ -48,6 +47,12 @@ public class PasswordValidator implements IPasswordValidator {
 
     @Override
     public ValidationResult validate(PasswordData passwordData) throws InvalidPasswordDataException {
+        if(passwordData == null){
+            throw  new InvalidPasswordDataException(InvalidPasswordDataException.Type.DATA_NULL);
+        }
+        if(passwordData.getPassword() == null){
+            throw  new InvalidPasswordDataException(InvalidPasswordDataException.Type.PASSWORD_NULL);
+        }
         List<ErrorDetails> errors = new LinkedList<>();
         for(Rule rule: rules){
             PasswordRuleResult ruleResult = rule.validate(passwordData);
