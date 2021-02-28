@@ -1,7 +1,7 @@
 package com.farfocle.password_validator.cache;
 
-import com.farfocle.password_validator.ErrorDetails;
-import com.farfocle.password_validator.PasswordRuleResult;
+import com.farfocle.password_validator.models.ErrorDetails;
+import com.farfocle.password_validator.models.PasswordRuleResult;
 
 import java.util.Map;
 import java.util.Queue;
@@ -14,29 +14,29 @@ public class ErrorDetailsCache {
     private final Queue<PasswordRuleResult> queue;
     private final int size;
 
-    public ErrorDetailsCache(int size){
+    public ErrorDetailsCache(int size) {
         this.size = size;
         this.cacheMap = new ConcurrentHashMap<>(size);
         this.queue = new ConcurrentLinkedQueue<>();
     }
 
-    public ErrorDetails getErrorDetails(PasswordRuleResult ruleResult, CreateErrorDetailsFunction function){
+    public ErrorDetails getErrorDetails(PasswordRuleResult ruleResult, CreateErrorDetailsFunction function) {
         int currentSize = cacheMap.size();
         ErrorDetails details = cacheMap.computeIfAbsent(ruleResult, function);
-        if(currentSize != cacheMap.size()){
+        if (currentSize != cacheMap.size()) {
             queue.add(ruleResult);
         }
-        if(cacheMap.size() > this.size){
+        if (cacheMap.size() > this.size) {
             cacheMap.remove(queue.poll());
         }
         return details;
     }
 
-    public boolean isPresent(PasswordRuleResult ruleResult){
+    public boolean isPresent(PasswordRuleResult ruleResult) {
         return cacheMap.containsKey(ruleResult);
     }
 
-    public int getSize(){
+    public int getSize() {
         return this.cacheMap.size();
     }
 

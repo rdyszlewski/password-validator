@@ -1,7 +1,7 @@
 package com.farfocle.password_validator.message_creator;
 
-import com.farfocle.password_validator.InfoType;
-import com.farfocle.password_validator.PasswordError;
+import com.farfocle.password_validator.models.InfoType;
+import com.farfocle.password_validator.models.PasswordError;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,7 +31,7 @@ public class FileValidationMessageCreatorTest {
     }
 
     @Test
-    public void shouldSuccessfulValidateMessageCreator() throws IOException, MessageCreatorValidationException, URISyntaxException {
+    public void shouldSuccessfulValidateMessageCreator()  {
         List<InfoType> minLengthInfo = Collections.singletonList(InfoType.VALID);
         List<InfoType> maxLengthInfo = Collections.singletonList(InfoType.VALID);
         List<InfoType> usernameLengthInfo = Collections.singletonList(InfoType.VALID);
@@ -46,7 +46,7 @@ public class FileValidationMessageCreatorTest {
     }
 
     @Test
-    public void shouldFailValidationMessageCreator() throws IOException, MessageCreatorValidationException, URISyntaxException {
+    public void shouldFailValidationMessageCreator() {
         List<InfoType> minLengthInfo = Collections.singletonList(InfoType.VALID);
         List<InfoType> maxLengthInfo = new ArrayList<>();
         List<InfoType> usernameLengthInfo = Collections.singletonList(InfoType.VALID);

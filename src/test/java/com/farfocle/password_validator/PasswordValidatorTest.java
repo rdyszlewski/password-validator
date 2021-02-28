@@ -1,8 +1,8 @@
 package com.farfocle.password_validator;
 
 import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
+import com.farfocle.password_validator.models.*;
 import com.farfocle.password_validator.rules.*;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

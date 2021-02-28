@@ -1,8 +1,8 @@
 package com.farfocle.password_validator.message_creator;
 
-import com.farfocle.password_validator.PasswordData;
+import com.farfocle.password_validator.models.PasswordData;
 import com.farfocle.password_validator.PasswordValidator;
-import com.farfocle.password_validator.ValidationResult;
+import com.farfocle.password_validator.models.ValidationResult;
 import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.message_creator.data.TesSuccessMessageSource;
 import com.farfocle.password_validator.message_creator.data.TestFailMessageSource;

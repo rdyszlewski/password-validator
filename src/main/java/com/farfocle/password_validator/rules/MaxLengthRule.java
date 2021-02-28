@@ -1,9 +1,6 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.InfoType;
-import com.farfocle.password_validator.PasswordError;
-
-import java.util.List;
+import com.farfocle.password_validator.models.PasswordError;
 
 public class MaxLengthRule extends LengthRule {
 
@@ -21,7 +18,6 @@ public class MaxLengthRule extends LengthRule {
     public PasswordError getErrorType() {
         return PasswordError.TOO_LONG;
     }
-
 
 
     @Override

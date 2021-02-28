@@ -1,7 +1,7 @@
 package com.farfocle.password_validator.test_utils;
 
-import com.farfocle.password_validator.PasswordData;
-import com.farfocle.password_validator.PasswordRuleResult;
+import com.farfocle.password_validator.models.PasswordData;
+import com.farfocle.password_validator.models.PasswordRuleResult;
 import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.rules.Rule;
 

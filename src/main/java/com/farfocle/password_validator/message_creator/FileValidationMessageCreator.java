@@ -1,7 +1,7 @@
 package com.farfocle.password_validator.message_creator;
 
-import com.farfocle.password_validator.InfoType;
-import com.farfocle.password_validator.PasswordRuleResult;
+import com.farfocle.password_validator.models.InfoType;
+import com.farfocle.password_validator.models.PasswordRuleResult;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +33,7 @@ public class FileValidationMessageCreator implements ValidationMessageCreator {
     }
 
     @Override
-    public boolean validate(List<MessageValidationRule> rules) throws MessageCreatorValidationException {
+    public boolean validate(List<MessageValidationRule> rules) {
         for (MessageValidationRule rule : rules) {
             String message = properties.getProperty(rule.getError().name());
             for (InfoType infoType : rule.getAvailableInfo()) {

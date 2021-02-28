@@ -1,14 +1,13 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.InfoType;
-import com.farfocle.password_validator.PasswordData;
-import com.farfocle.password_validator.PasswordRuleResult;
+import com.farfocle.password_validator.models.InfoType;
+import com.farfocle.password_validator.models.PasswordData;
+import com.farfocle.password_validator.models.PasswordRuleResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public abstract class CharactersRule extends Rule {
 

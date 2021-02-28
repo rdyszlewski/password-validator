@@ -1,7 +1,7 @@
 package com.farfocle.password_validator.cache;
 
-import com.farfocle.password_validator.ErrorDetails;
-import com.farfocle.password_validator.PasswordRuleResult;
+import com.farfocle.password_validator.models.ErrorDetails;
+import com.farfocle.password_validator.models.PasswordRuleResult;
 
 import java.util.function.Function;
 

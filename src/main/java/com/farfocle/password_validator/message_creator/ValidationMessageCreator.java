@@ -1,6 +1,6 @@
 package com.farfocle.password_validator.message_creator;
 
-import com.farfocle.password_validator.PasswordRuleResult;
+import com.farfocle.password_validator.models.PasswordRuleResult;
 
 import java.util.List;
 

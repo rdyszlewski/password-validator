@@ -1,9 +1,9 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.InfoType;
-import com.farfocle.password_validator.PasswordData;
-import com.farfocle.password_validator.PasswordError;
-import com.farfocle.password_validator.PasswordRuleResult;
+import com.farfocle.password_validator.models.InfoType;
+import com.farfocle.password_validator.models.PasswordData;
+import com.farfocle.password_validator.models.PasswordError;
+import com.farfocle.password_validator.models.PasswordRuleResult;
 import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 
 import java.util.List;
@@ -18,9 +18,13 @@ public abstract class Rule {
     }
 
     protected abstract PasswordRuleResult validatePassword(PasswordData password) throws InvalidPasswordDataException;
+
     protected abstract boolean validatePasswordSimple(PasswordData password);
+
     public abstract PasswordError getErrorType();
+
     public abstract List<InfoType> getAvailableInfoType();
+
     public abstract String getErrorMessage();
 
 

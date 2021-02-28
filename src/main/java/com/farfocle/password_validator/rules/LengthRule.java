@@ -1,11 +1,14 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.InfoType;
-import com.farfocle.password_validator.PasswordData;
-import com.farfocle.password_validator.PasswordError;
-import com.farfocle.password_validator.PasswordRuleResult;
+import com.farfocle.password_validator.models.InfoType;
+import com.farfocle.password_validator.models.PasswordData;
+import com.farfocle.password_validator.models.PasswordError;
+import com.farfocle.password_validator.models.PasswordRuleResult;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public abstract class LengthRule extends Rule {
 

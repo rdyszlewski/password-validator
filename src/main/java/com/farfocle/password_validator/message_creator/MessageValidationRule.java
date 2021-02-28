@@ -1,7 +1,7 @@
 package com.farfocle.password_validator.message_creator;
 
-import com.farfocle.password_validator.InfoType;
-import com.farfocle.password_validator.PasswordError;
+import com.farfocle.password_validator.models.InfoType;
+import com.farfocle.password_validator.models.PasswordError;
 
 import java.util.Collections;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package com.farfocle.password_validator;
+package com.farfocle.password_validator.models;
 
 public enum PasswordError {
     TOO_SHORT,

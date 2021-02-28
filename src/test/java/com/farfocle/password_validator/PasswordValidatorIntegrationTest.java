@@ -7,12 +7,14 @@ import com.farfocle.password_validator.message_creator.SourceValidationMessageCr
 import com.farfocle.password_validator.message_creator.ValidationMessageCreator;
 import com.farfocle.password_validator.message_creator.data.TesSuccessMessageSource;
 import com.farfocle.password_validator.message_creator.data.TestFailMessageSource;
+import com.farfocle.password_validator.models.InfoType;
+import com.farfocle.password_validator.models.PasswordData;
+import com.farfocle.password_validator.models.PasswordError;
+import com.farfocle.password_validator.models.ValidationResult;
 import com.farfocle.password_validator.rules.*;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class PasswordValidatorIntegrationTest {
     private final int DIGITS = 1;
 
     @Before
-    public void initValidator() throws MessageCreatorValidationException {
+    public void initValidator() {
         rules = Arrays.asList(
                 new MinLengthRule.Builder(MIN_LENGTH).setInterrupting().build(),
                 new MaxLengthRule.Builder(MAX_LENGTH).setInterrupting().build(),
@@ -108,7 +110,7 @@ public class PasswordValidatorIntegrationTest {
     }
 
     @Test
-    public void shouldReturnMessagesFromCreator() throws MessageCreatorValidationException, InvalidPasswordDataException {
+    public void shouldReturnMessagesFromCreator() throws InvalidPasswordDataException {
         MessageCreatorSource source = new TesSuccessMessageSource();
         ValidationMessageCreator creator = new SourceValidationMessageCreator(source);
         validator.setErrorMessageCreator(creator);
@@ -128,7 +130,7 @@ public class PasswordValidatorIntegrationTest {
     }
 
     @Test(expected = MessageCreatorValidationException.class)
-    public void shouldThrowMessageCreatorValidationException() throws MessageCreatorValidationException {
+    public void shouldThrowMessageCreatorValidationException() {
         MessageCreatorSource source = new TestFailMessageSource();
         ValidationMessageCreator creator = new SourceValidationMessageCreator(source);
         validator.setErrorMessageCreator(creator);

@@ -1,9 +1,7 @@
-package com.farfocle.password_validator;
-
+package com.farfocle.password_validator.models;
 
 
 import java.util.Collections;
-
 import java.util.Map;
 
 public final class ErrorDetails {

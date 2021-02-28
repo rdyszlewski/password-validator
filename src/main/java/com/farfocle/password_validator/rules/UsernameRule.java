@@ -1,9 +1,9 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.InfoType;
-import com.farfocle.password_validator.PasswordData;
-import com.farfocle.password_validator.PasswordError;
-import com.farfocle.password_validator.PasswordRuleResult;
+import com.farfocle.password_validator.models.InfoType;
+import com.farfocle.password_validator.models.PasswordData;
+import com.farfocle.password_validator.models.PasswordError;
+import com.farfocle.password_validator.models.PasswordRuleResult;
 import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 
 import java.util.LinkedList;
@@ -22,7 +22,7 @@ public class UsernameRule extends Rule {
 
     @Override
     public PasswordRuleResult validatePassword(PasswordData password) throws InvalidPasswordDataException {
-        if(password.getUsername() == null){
+        if (password.getUsername() == null) {
             throw new InvalidPasswordDataException(InvalidPasswordDataException.Type.USERNAME_NULL);
         }
         if (!validatePasswordSimple(password)) {

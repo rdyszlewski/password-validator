@@ -1,15 +1,12 @@
 package com.farfocle.password_validator.message_creator.data;
 
-import com.farfocle.password_validator.InfoType;
-import com.farfocle.password_validator.PasswordError;
+import com.farfocle.password_validator.models.InfoType;
+import com.farfocle.password_validator.models.PasswordError;
 import com.farfocle.password_validator.message_creator.MessageCreatorSource;
 import com.farfocle.password_validator.message_creator.MessageFunction;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class TesSuccessMessageSource implements MessageCreatorSource {
 

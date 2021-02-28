@@ -1,6 +1,6 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.PasswordError;
+import com.farfocle.password_validator.models.PasswordError;
 
 import java.util.Collection;
 import java.util.List;

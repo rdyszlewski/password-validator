@@ -1,4 +1,4 @@
-package com.farfocle.password_validator;
+package com.farfocle.password_validator.models;
 
 import java.util.Objects;
 

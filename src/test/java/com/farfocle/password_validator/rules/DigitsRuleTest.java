@@ -1,6 +1,6 @@
 package com.farfocle.password_validator.rules;
 
-import com.farfocle.password_validator.PasswordError;
+import com.farfocle.password_validator.models.PasswordError;
 import com.farfocle.password_validator.exceptions.InvalidPasswordDataException;
 import com.farfocle.password_validator.test_utils.TestExceptionUtils;
 import org.junit.Test;

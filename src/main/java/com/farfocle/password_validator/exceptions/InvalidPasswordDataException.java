@@ -1,7 +1,7 @@
 package com.farfocle.password_validator.exceptions;
 
-public final class InvalidPasswordDataException extends Exception{
-    public enum Type{
+public final class InvalidPasswordDataException extends Exception {
+    public enum Type {
         DATA_NULL,
         PASSWORD_NULL,
         USERNAME_NULL
@@ -9,17 +9,17 @@ public final class InvalidPasswordDataException extends Exception{
 
     private final Type errorType;
 
-    public InvalidPasswordDataException(Type type){
+    public InvalidPasswordDataException(Type type) {
         this.errorType = type;
     }
 
-    public Type getErrorType(){
+    public Type getErrorType() {
         return this.errorType;
     }
 
     @Override
-    public String getMessage(){
-        switch (this.errorType){
+    public String getMessage() {
+        switch (this.errorType) {
             case DATA_NULL:
                 return "Password data is null";
             case PASSWORD_NULL:
